@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="pl"></html>
 <head>
@@ -53,7 +54,7 @@
       margin: 32px auto 0 auto;
       background: #e3f2fd;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(25,118,210,0.08);
+      box-shadow: 0 2px 8px hwb(0 60% 40%);
       padding: 12px;
     }
     @media (max-width: 600px) {
@@ -75,7 +76,7 @@
     <a href="main.html">Strona główna</a>
   </div>
   <div class="container">
-    <h2>Kartony – powierzchnia otrzymana vs skrawki</h2>
+    <h2>Kartony – karton otrzymany vs skrawki</h2>
     <canvas id="pieChart" width="400" height="400"></canvas>
   </div>
   <script>
@@ -93,11 +94,11 @@
         new Chart(ctx, {
           type: "pie",
           data: {
-            labels: ["Powierzchnia otrzymana", "Skrawki (reszta)"],
+            labels: ["karton otrzymany", "Skrawki"],
             datasets: [{
               data: [totalOutput, totalScrap],
-              backgroundColor: ["#1976d2", "#90caf9"],
-              borderColor: ["#1565c0", "#64b5f6"],
+              backgroundColor: ["956f8a"],
+              borderColor: ["#4f063a", "#999999"],
               borderWidth: 2
             }]
           },
@@ -114,4 +115,3 @@
   </script>
 </body>
 </html>
-
