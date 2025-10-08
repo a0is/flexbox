@@ -1,16 +1,83 @@
 
+
+
 <!DOCTYPE html>
 <html lang="pl"></html>
 <head>
   <meta charset="utf-8" />
   <title>Wykres kartonów</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', Arial, sans-serif;
+      background: #f5f5f5;
+    }
+    .navbar {
+      background: #390731;
+      color: #fff;
+      padding: 16px 32px;
+      font-size: 1.2em;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+    }
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 24px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .navbar a:hover {
+      color: #90caf9;
+    }
+    .container {
+      max-width: 500px;
+      margin: 48px auto 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    h2 {
+      margin-top: 0;
+      color: #41082f;
+      font-weight: 700;
+      font-size: 1.5em;
+    }
+    #pieChart {
+      display: block;
+      margin: 32px auto 0 auto;
+      background: #e3f2fd;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(25,118,210,0.08);
+      padding: 12px;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 16px 4px;
+      }
+      #pieChart {
+        width: 100% !important;
+        height: auto !important;
+      }
+    }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script>
 </head>
 <body>
-  <h2>Kartony – powierzchnia otrzymana vs skrawki</h2>
-  <canvas id="pieChart" width="400" height="400"></canvas>
-
+  <div class="navbar">
+    Wykres kartonów
+    <a href="main.html">Strona główna</a>
+  </div>
+  <div class="container">
+    <h2>Kartony – powierzchnia otrzymana vs skrawki</h2>
+    <canvas id="pieChart" width="400" height="400"></canvas>
+  </div>
   <script>
     Papa.parse("data.csv", {
       download: true,
@@ -18,19 +85,20 @@
       complete: function(results) {
         let totalOutput = 0;
         let totalScrap = 0;
-
         results.data.forEach(r => {
           totalOutput += parseFloat(r.output_area_m2 || 0);
           totalScrap += parseFloat(r.scrap_area_m2 || 0);
         });
-
         const ctx = document.getElementById("pieChart").getContext("2d");
         new Chart(ctx, {
           type: "pie",
           data: {
-            labels: ["karton pozyskany", "Skrawki"],
+            labels: ["Powierzchnia otrzymana", "Skrawki (reszta)"],
             datasets: [{
-              data: [totalOutput, totalScrap]
+              data: [totalOutput, totalScrap],
+              backgroundColor: ["#1976d2", "#90caf9"],
+              borderColor: ["#1565c0", "#64b5f6"],
+              borderWidth: 2
             }]
           },
           options: {
