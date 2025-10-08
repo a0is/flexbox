@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karton - Strona główna</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1a0016;
+            color: #fff;
+            padding: 16px 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .navbar-logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .navbar-links {
+            display: flex;
+            gap: 24px;
+        }
+        .navbar-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .navbar-links a:hover {
+            color: #f990e7;
+        }
+        .main-content {
+            max-width: 800px;
+            margin: 48px auto 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(247, 194, 194, 0.07);
+            padding: 40px 32px;
+            text-align: center;
+        }
+        .chart-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+        .chart-card {
+            background: #e3f2fd;
+            border-radius: 8px;
+            padding: 24px 32px;
+            min-width: 180px;
+            box-shadow: 0 2px 8px rgba(250, 154, 154, 0.08);
+            transition: box-shadow 0.2s;
+            text-decoration: none;
+            color: #22011b;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .chart-card:hover {
+            box-shadow: 0 6px 24px rgba(86, 8, 83, 0.15);
+            background: #fbbbed;
+        }
+        .chart-icon {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+        }
+        @media (max-width: 600px) {
+            .main-content {
+                padding: 20px 8px;
+            }
+            .chart-links {
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">Karton</div>
+        <div class="navbar-links">
+            <a href="#">Strona główna</a>
+            <a href="https://a0is.github.io/karton/index.html">  Wykres 1</a>
+            <a href="wykres2.html">Wykres 2</a>
+            <a href="wykres3.html">Wykres 3</a>
+            <a href="wykres4.html">wykres 4</a>
+        </div>
+    </nav>
+    <div class="main-content">s
+        <h1>Witamy w Karton!</h1>
+        <p>Wybierz wykres, który chcesz zobaczyć:</p>
+        <div class="chart-links">
+            <a class="chart-card" href="https://a0is.github.io/karton/index.html">
+                <span class="chart-icon"> 🔵</span>
+                Wykres 1
+            </a>
+            <a class="chart-card" href="wykres2.html">
+                <span class="chart-icon">📈</span>
+                Wykres 2
+            </a>
+            <a class="chart-card" href="wykres3.html">
+                <span class="chart-icon">📉</span>
+                Wykres 3
+            </a>
+             <a class="chart-card" href="wykres1.html">
+                <span class="chart-icon">📊</span>
+                Wykres 4
+            </a>
+        </div>
+    </div>
+</body>
+</html>
