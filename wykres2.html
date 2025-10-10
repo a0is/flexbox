@@ -82,11 +82,31 @@
       fetch(fileName)
         .then(response => response.json())
         .then(json => {
-          const rawValues = json.Z2b.split(';').map(v => parseFloat(v));
+          const keys = Object.keys(json);
+          if (keys.length === 0) {
+            alert("Plik JSON nie zawiera danych!");
+            drawChart([], [], fileName);
+            return;
+          }
+          const key = keys[0];
+          if (typeof json[key] !== "string") {
+            alert("Dane w pliku JSON są w nieprawidłowym formacie!");
+            drawChart([], [], fileName);
+            return;
+          }
+          const rawValues = json[key].split(';').map(v => parseFloat(v));
+          if (rawValues.length === 0 || isNaN(rawValues[0])) {
+            alert("Brak poprawnych wartości liczbowych w pliku JSON!");
+            drawChart([], [], fileName);
+            return;
+          }
           const labels = rawValues.map((_, i) => `Pomiar ${i + 1}`);
           drawChart(labels, rawValues, fileName);
         })
-        .catch(error => console.error("Błąd wczytywania JSON:", error));
+        .catch(error => {
+          alert("Błąd wczytywania JSON: " + error);
+          drawChart([], [], fileName);
+        });
     }
 
     function drawChart(labels, values, fileName) {
@@ -128,6 +148,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
