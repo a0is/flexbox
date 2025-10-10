@@ -1,125 +1,139 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8" />
-  <title>Wykres słupkowy kartonów</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Wykres produkcji</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <style>
     body {
-      margin: 0;
-      font-family: 'Roboto', Arial, sans-serif;
-      background: #f5f5f5;
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f7f7f7;
+      color: #222;
     }
-    .navbar {
-      background: #390731;
-      color: #fff;
-      padding: 16px 32px;
-      font-size: 1.2em;
-      font-weight: bold;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    #controls {
+      margin-bottom: 20px;
+      background: #fff;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       display: flex;
       align-items: center;
+      gap: 16px;
     }
-    .navbar a {
-      color: #fff;
-      text-decoration: none;
-      margin-left: 24px;
-      font-weight: 500;
-      transition: color 0.2s;
+    label {
+      font-weight: bold;
+      color: #1976d2;
     }
-    .navbar a:hover {
-      color: #c890f9;
+    select {
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid #bdbdbd;
+      background: #f0f0f0;
+      color: #222;
     }
-    .container {
-      max-width: 500px;
-      margin: 48px auto 0 auto;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-      padding: 32px 24px;
-      text-align: center;
-    }
-    h2 {
-      margin-top: 0;
-      color: #41082f;
-      font-weight: 700;
-      font-size: 1.5em;
-    }
-    #barChart {
-      display: block;
-      margin: 32px auto 0 auto;
+    #chart-container {
+      width: 80vw;
+      max-width: 900px;
       background: #fff;
       border-radius: 12px;
-      box-shadow: 0 2px 8px hwb(0 60% 40%);
-      padding: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 32px 24px;
+      margin-top: 16px;
     }
-    @media (max-width: 600px) {
-      .container {
-        padding: 16px 4px;
-      }
-      #barChart {
-        width: 100% !important;
-        height: auto !important;
-      }
+    a.return-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      padding: 8px 18px;
+      background: #1976d2;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      box-shadow: 0 1px 4px rgba(25,118,210,0.12);
+      transition: background 0.2s;
+    }
+    a.return-link:hover {
+      background: #1565c0;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script>
 </head>
 <body>
-  <div class="navbar">
-    Wykres słupkowy kartonów
-    <a href="main.html">Strona główna</a>
+  <a href="main.html" class="return-link">Powrót do strony głównej</a>
+  <div id="controls">
+    <label for="zakres">Wybierz zakres danych:</label>
+    <select id="zakres">
+      <optgroup label="Dni">
+        <option value="dzien_11.csv">Dzień 11</option>
+        <option value="dzien_14.csv">Dzień 14</option>
+        <option value="dzien_22.csv">Dzień 22</option>
+        <option value="dzien_28.csv">Dzień 28</option>
+        <option value="dzien_29.csv">Dzień 29</option>
+      </optgroup>
+      <optgroup label="Tygodnie">
+        <option value="tydzien1.csv">Tydzień 1</option>
+        <option value="tydzien2.csv">Tydzień 2</option>
+      </optgroup>
+      <optgroup label="Miesiąc">
+        <option value="miesiac.csv">Miesiąc</option>
+      </optgroup>
+    </select>
   </div>
-  <div class="container">
-    <h2>Kartony – wykres słupkowy</h2>
-    <canvas id="barChart" width="500" height="350"></canvas>
+  <div id="chart-container">
+    <canvas id="myChart"></canvas>
   </div>
   <script>
-    Papa.parse("data.csv", {
-      download: true,
-      header: true,
-      complete: function(results) {
-        let labels = [];
-        let outputData = [];
-        let scrapData = [];
-        results.data.forEach((r, i) => {
-          labels.push(r.label || `Pozycja ${i+1}`);
-          outputData.push(parseFloat(r.output_area_m2 || 0));
-          scrapData.push(parseFloat(r.scrap_area_m2 || 0));
-        });
-        const ctx = document.getElementById("barChart").getContext("2d");
-        new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: "Karton otrzymany",
-                data: outputData,
-                backgroundColor: "#ffb6d5"
-              },
-              {
-                label: "Skrawki",
-                data: scrapData,
-                backgroundColor: "#4f063a"
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { position: "top" },
-              title: { display: true, text: "Porównanie kartonu otrzymanego i skrawków" }
-            },
-            scales: {
-              x: { stacked: true },
-              y: { stacked: true }
+    let chart;
+    function loadCSVAndDrawChart(fileName) {
+      Papa.parse(fileName, {
+        download: true,
+        header: true,
+        complete: function(results) {
+          const data = results.data;
+          const labels = data.map(row => row['data'] || row['Data'] || row['date'] || row['Date']);
+          const values = data.map(row => parseFloat(row['wartosc'] || row['Wartosc'] || row['value'] || row['Value']));
+          drawChart(labels, values, fileName);
+        }
+      });
+    }
+
+    function drawChart(labels, values, fileName) {
+      const ctx = document.getElementById('myChart').getContext('2d');
+      if (chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Wartość',
+            data: values,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            fill: true,
+            tension: 0.2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Wykres dla: ' + fileName
             }
           }
-        });
-      }
+        }
+      });
+    }
+
+    document.getElementById('zakres').addEventListener('change', function() {
+      loadCSVAndDrawChart(this.value);
     });
+
+    window.onload = function() {
+      const select = document.getElementById('zakres');
+      loadCSVAndDrawChart(select.value);
+    };
   </script>
 </body>
 </html>
