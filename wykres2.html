@@ -92,7 +92,6 @@
   <div id="controls">
     <label for="zakres">Wybierz zakres danych:</label>
     <select id="zakres">
-  
       <optgroup label="Dni">
         <option value="11.csv">Dzień 11</option>
         <option value="14.csv">Dzień 14</option>
@@ -127,10 +126,11 @@
                 || keys.find(k => k.toLowerCase().startsWith('week'))
                 || keys.find(k => k.toLowerCase().startsWith('month'));
             }
+            
             let labels;
             if (labelKey && labelKey.startsWith('day')) {
               const dayNum = fileName.replace('.csv', '').replace(/[^0-9]/g, '');
-              labels = ['Dzień ' + dayNum];
+              labels = [dayNum];
             } else {
               labels = labelKey ? data.map(row => (row[labelKey] || '').replace(/"/g, '')) : data.map((_, i) => `Wiersz ${i+1}`);
             }
@@ -208,7 +208,7 @@
             complete: function(results) {
               const data = results.data;
               const dayNum = file.replace('.csv', '').replace(/[^0-9]/g, '');
-                labels.push('Dzień ' + dayNum);
+              labels.push(dayNum);
               const value = data.length > 0 ? parseFloat((data[0]['m2'] || data[0]['M2'] || '').replace(/"/g, '')) : null;
               values.push(value);
               loaded++;
@@ -230,7 +230,7 @@
             complete: function(results) {
               const data = results.data;
               const dayNum = file.replace('.csv', '').replace(/[^0-9]/g, '');
-                labels.push('Dzień ' + dayNum);
+              labels.push(dayNum);
               const value = data.length > 0 ? parseFloat((data[0]['m2'] || data[0]['M2'] || '').replace(/"/g, '')) : null;
               values.push(value);
               loaded++;
@@ -252,7 +252,7 @@
             complete: function(results) {
               const data = results.data;
               const dayNum = file.replace('.csv', '').replace(/[^0-9]/g, '');
-                labels.push('Dzień ' + dayNum);
+              labels.push(dayNum);
               const value = data.length > 0 ? parseFloat((data[0]['m2'] || data[0]['M2'] || '').replace(/"/g, '')) : null;
               values.push(value);
               loaded++;
@@ -274,6 +274,7 @@
   </script>
 </body>
 </html>
+
 
 
 
