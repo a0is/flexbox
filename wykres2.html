@@ -11,6 +11,7 @@
       margin: 40px;
       background: #f7f7f7;
       color: #222;
+    }
 
     #controls {
       margin-bottom: 20px;
@@ -24,7 +25,7 @@
     }
     label {
       font-weight: bold;
-      color: #1976d2;
+      color: #e91e63;
     }
     select {
       padding: 6px 12px;
@@ -46,16 +47,16 @@
       display: inline-block;
       margin-bottom: 24px;
       padding: 8px 18px;
-      background: #1976d2;
+      background: #e91e63;
       color: #fff;
       text-decoration: none;
       border-radius: 6px;
       font-weight: bold;
-      box-shadow: 0 1px 4px rgba(25,118,210,0.12);
+      box-shadow: 0 1px 4px rgba(233,30,99,0.12);
       transition: background 0.2s;
     }
     a.return-link:hover {
-      background: #1565c0;
+      background: #ad1457;
     }
   </style>
 </head>
@@ -115,18 +116,23 @@
           datasets: [{
             label: 'Wartość',
             data: values,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(233, 30, 99, 1)', // mocny róż
+            backgroundColor: 'rgba(233, 30, 99, 0.2)', // jasny róż
             fill: true,
             tension: 0.2
           }]
         },
         options: {
           responsive: true,
+          animation: {
+            duration: 1000,
+            easing: 'easeOutQuart'
+          },
           plugins: {
             title: {
               display: true,
-              text: 'Wykres dla: ' + fileName
+              text: 'Wykres dla: ' + fileName,
+              color: '#e91e63'
             }
           }
         }
