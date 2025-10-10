@@ -100,7 +100,7 @@
             }
             
             const labels = labelKey ? data.map(row => (row[labelKey] || '').replace(/"/g, '')) : data.map((_, i) => `Wiersz ${i+1}`);
-          const values = data.map(row => parseFloat(row['wartosc'] || row['Wartosc'] || row['value'] || row['Value']));
+          const values = data.map(row => parseFloat((row['m2'] || row['m2'] || '').replace(/"/g, '')));
           drawChart(labels, values, fileName);
         }
       });
@@ -144,4 +144,5 @@
   </script>
 </body>
 </html>
+
 
