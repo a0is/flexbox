@@ -127,11 +127,10 @@
                 || keys.find(k => k.toLowerCase().startsWith('week'))
                 || keys.find(k => k.toLowerCase().startsWith('month'));
             }
-            
             let labels;
             if (labelKey && labelKey.startsWith('day')) {
               const dayNum = fileName.replace('.csv', '').replace(/[^0-9]/g, '');
-              labels = [dayNum];
+              labels = ['Dzień ' + dayNum];
             } else {
               labels = labelKey ? data.map(row => (row[labelKey] || '').replace(/"/g, '')) : data.map((_, i) => `Wiersz ${i+1}`);
             }
@@ -275,7 +274,6 @@
   </script>
 </body>
 </html>
-
 
 
 
