@@ -58,7 +58,7 @@
     a.return-link:hover {
       background: #ad1457;
     }
-    .navbar {
+      .navbar {
       background: #390731;
       color: #fff;
       padding: 16px 32px;
@@ -92,7 +92,7 @@
   <div id="controls">
     <label for="zakres">Wybierz zakres danych:</label>
     <select id="zakres">
-    
+  
       <optgroup label="Dni">
         <option value="11.csv">Dzień 11</option>
         <option value="14.csv">Dzień 14</option>
@@ -209,7 +209,7 @@
             complete: function(results) {
               const data = results.data;
               const dayNum = file.replace('.csv', '').replace(/[^0-9]/g, '');
-              labels.push(dayNum);
+                labels.push('Dzień ' + dayNum);
               const value = data.length > 0 ? parseFloat((data[0]['m2'] || data[0]['M2'] || '').replace(/"/g, '')) : null;
               values.push(value);
               loaded++;
@@ -231,7 +231,7 @@
             complete: function(results) {
               const data = results.data;
               const dayNum = file.replace('.csv', '').replace(/[^0-9]/g, '');
-              labels.push(dayNum);
+                labels.push('Dzień ' + dayNum);
               const value = data.length > 0 ? parseFloat((data[0]['m2'] || data[0]['M2'] || '').replace(/"/g, '')) : null;
               values.push(value);
               loaded++;
@@ -253,7 +253,7 @@
             complete: function(results) {
               const data = results.data;
               const dayNum = file.replace('.csv', '').replace(/[^0-9]/g, '');
-              labels.push(dayNum);
+                labels.push('Dzień ' + dayNum);
               const value = data.length > 0 ? parseFloat((data[0]['m2'] || data[0]['M2'] || '').replace(/"/g, '')) : null;
               values.push(value);
               loaded++;
@@ -275,6 +275,7 @@
   </script>
 </body>
 </html>
+
 
 
 
