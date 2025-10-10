@@ -61,10 +61,37 @@
   </style>
 </head>
 <body>
-  <a href="main.html" class="return-link">Powrót do strony głównej</a>
+  <nav class="navbar">
+    <span class="navbar-logo">boxmat</span>
+    <a href="main.html">Strona główna</a>
+  </nav>
   <div id="controls">
     <label for="zakres">Wybierz zakres danych:</label>
     <select id="zakres">
+    .navbar {
+      background: #390731;
+      color: #fff;
+      padding: 16px 32px;
+      font-size: 1.2em;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+    }
+    .navbar-logo {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 24px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .navbar a:hover {
+      color: #f990e7;
+    }
       <optgroup label="Dni">
         <option value="11.csv">Dzień 11</option>
         <option value="14.csv">Dzień 14</option>
@@ -170,7 +197,6 @@
 
     document.getElementById('zakres').addEventListener('change', function() {
       if (this.value === 'all_days') {
-        // Porównanie wszystkich dni
         const dayFiles = ["11.csv", "14.csv", "22.csv", "28.csv", "29.csv"];
         let loaded = 0;
         const labels = [];
@@ -193,7 +219,6 @@
           });
         });
       } else if (this.value === 'week1') {
-        // Porównanie tygodnia 1 (dni 11, 14)
         const week1Files = ["11.csv", "14.csv"];
         let loaded = 0;
         const labels = [];
@@ -216,7 +241,6 @@
           });
         });
       } else if (this.value === 'week2') {
-        // Porównanie tygodnia 2 (dni 22, 28, 29)
         const week2Files = ["22.csv", "28.csv", "29.csv"];
         let loaded = 0;
         const labels = [];
