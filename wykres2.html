@@ -100,7 +100,14 @@
                 || keys.find(k => k.toLowerCase().startsWith('month'));
             }
             
-            const labels = labelKey ? data.map(row => (row[labelKey] || '').replace(/"/g, '')) : data.map((_, i) => `Wiersz ${i+1}`);
+            let labels;
+            if (labelKey && labelKey.startsWith('day')) {
+              // dla plików dziennych etykieta to numer dnia z nazwy pliku
+              const dayNum = fileName.replace('.csv', '').replace(/[^0-9]/g, '');
+              labels = [dayNum];
+            } else {
+              labels = labelKey ? data.map(row => (row[labelKey] || '').replace(/"/g, '')) : data.map((_, i) => `Wiersz ${i+1}`);
+            }
           const values = data.map(row => parseFloat((row['m2'] || row['M2'] || '').replace(/"/g, '')));
           drawChart(labels, values, fileName);
         }
