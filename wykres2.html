@@ -11,7 +11,7 @@
       margin: 40px;
       background: #f7f7f7;
       color: #222;
-    }
+
     #controls {
       margin-bottom: 20px;
       background: #fff;
@@ -64,12 +64,19 @@
   <div id="controls">
     <label for="zakres">Wybierz zakres danych:</label>
     <select id="zakres">
-      <optgroup label="Zestawy testowe">
-        <option value="test.json">Testowy zestaw</option>
-        <option value="29.json">Dzień 29</option>
-        <option value="tydzien1.json">Tydzień 1</option>
-        <option value="tydzien2.json">Tydzień 2</option>
-        <option value="miesiac.json">Miesiąc</option>
+      <optgroup label="Dni">
+        <option value="dzien_11.csv">Dzień 11</option>
+        <option value="dzien_14.csv">Dzień 14</option>
+        <option value="dzien_22.csv">Dzień 22</option>
+        <option value="dzien_28.csv">Dzień 28</option>
+        <option value="dzien_29.csv">Dzień 29</option>
+      </optgroup>
+      <optgroup label="Tygodnie">
+        <option value="tydzien1.csv">Tydzień 1</option>
+        <option value="tydzien2.csv">Tydzień 2</option>
+      </optgroup>
+      <optgroup label="Miesiąc">
+        <option value="miesiac.csv">Miesiąc</option>
       </optgroup>
     </select>
   </div>
@@ -78,37 +85,26 @@
   </div>
   <script>
     let chart;
-    function loadJSONAndDrawChart(fileName) {
-      fetch(fileName)
-        .then(response => response.json())
-        .then(json => {
-          const keys = Object.keys(json);
-          if (keys.length === 0) {
-            alert("Plik JSON nie zawiera danych!");
-            drawChart([], [], fileName);
-            return;
-          }
-          const key = keys[0];
-          if (typeof json[key] !== "string") {
-            alert("Dane w pliku JSON są w nieprawidłowym formacie!");
-            drawChart([], [], fileName);
-            return;
-          }
-          const rawValues = json[key].split(';').map(v => parseFloat(v));
-          if (rawValues.length === 0 || isNaN(rawValues[0])) {
-            alert("Brak poprawnych wartości liczbowych w pliku JSON!");
-            drawChart([], [], fileName);
-            return;
-          }
-          const labels = rawValues.map((_, i) => `Pomiar ${i + 1}`);
-          drawChart(labels, rawValues, fileName);
-        })
-        .catch(error => {
-          alert("Błąd wczytywania JSON: " + error);
-          drawChart([], [], fileName);
-        });
+    function loadCSVAndDrawChart(fileName) {
+      Papa.parse(fileName, {
+        download: true,
+        header: true,
+        complete: function(results) {
+          const data = results.data;
+            let labelKey = null;
+            if (data.length > 0) {
+              const keys = Object.keys(data[0]);
+              labelKey = keys.find(k => k.toLowerCase().startsWith('day'))
+                || keys.find(k => k.toLowerCase().startsWith('week'))
+                || keys.find(k => k.toLowerCase().startsWith('month'));
+            }
+            
+            const labels = labelKey ? data.map(row => (row[labelKey] || '').replace(/"/g, '')) : data.map((_, i) => `Wiersz ${i+1}`);
+          const values = data.map(row => parseFloat(row['wartosc'] || row['Wartosc'] || row['value'] || row['Value']));
+          drawChart(labels, values, fileName);
+        }
+      });
     }
-
     function drawChart(labels, values, fileName) {
       const ctx = document.getElementById('myChart').getContext('2d');
       if (chart) chart.destroy();
@@ -138,19 +134,14 @@
     }
 
     document.getElementById('zakres').addEventListener('change', function() {
-      loadJSONAndDrawChart(this.value);
+      loadCSVAndDrawChart(this.value);
     });
 
     window.onload = function() {
       const select = document.getElementById('zakres');
-      loadJSONAndDrawChart(select.value);
+      loadCSVAndDrawChart(select.value);
     };
   </script>
 </body>
 </html>
-
-
-
-
-
 
