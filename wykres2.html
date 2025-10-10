@@ -102,7 +102,7 @@
       const ctx = document.getElementById('myChart').getContext('2d');
       if (chart) chart.destroy();
       chart = new Chart(ctx, {
-        type: 'line',
+         type: 'bar',
         data: {
           labels: labels,
           datasets: [{
@@ -137,5 +137,6 @@
   </script>
 </body>
 </html>
+
 
 
