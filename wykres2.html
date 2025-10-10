@@ -109,34 +109,56 @@
     function drawChart(labels, values, fileName) {
       const ctx = document.getElementById('myChart').getContext('2d');
       if (chart) chart.destroy();
-      chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Wartość',
-            data: values,
-            borderColor: 'rgba(233, 30, 99, 1)', // mocny róż
-            backgroundColor: 'rgba(233, 30, 99, 0.2)', // jasny róż
-            fill: true,
-            tension: 0.2
-          }]
-        },
-        options: {
-          responsive: true,
-          animation: {
-            duration: 1000,
-            easing: 'easeOutQuart'
+       
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, '#f06292'); 
+        gradient.addColorStop(1, '#ad1457'); 
+
+        chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Wartość',
+              data: values,
+              borderColor: '#ad1457',
+              backgroundColor: gradient,
+              fill: true,
+              tension: 0.2
+            }]
           },
-          plugins: {
-            title: {
-              display: true,
-              text: 'Wykres dla: ' + fileName,
-              color: '#e91e63'
+          options: {
+            responsive: true,
+            animation: {
+              duration: 1000,
+              easing: 'easeOutQuart'
+            },
+            plugins: {
+              title: {
+                display: true,
+                text: 'Wykres dla: ' + fileName,
+                color: '#ad1457',
+                font: { size: 20, weight: 'bold' }
+              },
+              legend: {
+                labels: {
+                  color: '#ad1457',
+                  font: { weight: 'bold' }
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: { color: '#ad1457', font: { weight: 'bold' } },
+                grid: { color: '#f8bbd0' }
+              },
+              y: {
+                ticks: { color: '#ad1457', font: { weight: 'bold' } },
+                grid: { color: '#f8bbd0' }
+              }
             }
           }
-        }
-      });
+        });
     }
 
     document.getElementById('zakres').addEventListener('change', function() {
@@ -150,6 +172,5 @@
   </script>
 </body>
 </html>
-
 
 
