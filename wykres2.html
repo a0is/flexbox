@@ -73,11 +73,11 @@
         <option value="29.csv">Dzień 29</option>
       </optgroup>
       <optgroup label="Tygodnie">
-        <option value="tydzien1.csv">Tydzień 1</option>
-        <option value="tydzien2.csv">Tydzień 2</option>
+        <option value="week1">Tydzień 1 </option>
+        <option value="week2">Tydzień 2 </option>
       </optgroup>
       <optgroup label="Miesiąc">
-        <option value="miesiac.csv">Miesiąc</option>
+        <option value="all_days">miesiąc</option>
       </optgroup>
     </select>
   </div>
@@ -102,7 +102,6 @@
             
             let labels;
             if (labelKey && labelKey.startsWith('day')) {
-              // dla plików dziennych etykieta to numer dnia z nazwy pliku
               const dayNum = fileName.replace('.csv', '').replace(/[^0-9]/g, '');
               labels = [dayNum];
             } else {
@@ -131,7 +130,8 @@
               borderColor: '#ad1457',
               backgroundColor: gradient,
               fill: true,
-              tension: 0.2
+              tension: 0.2,
+              barThickness: 40
             }]
           },
           options: {
@@ -169,7 +169,78 @@
     }
 
     document.getElementById('zakres').addEventListener('change', function() {
-      loadCSVAndDrawChart(this.value);
+      if (this.value === 'all_days') {
+        // Porównanie wszystkich dni
+        const dayFiles = ["11.csv", "14.csv", "22.csv", "28.csv", "29.csv"];
+        let loaded = 0;
+        const labels = [];
+        const values = [];
+        dayFiles.forEach((file) => {
+          Papa.parse(file, {
+            download: true,
+            header: true,
+            complete: function(results) {
+              const data = results.data;
+              const dayNum = file.replace('.csv', '').replace(/[^0-9]/g, '');
+              labels.push(dayNum);
+              const value = data.length > 0 ? parseFloat((data[0]['m2'] || data[0]['M2'] || '').replace(/"/g, '')) : null;
+              values.push(value);
+              loaded++;
+              if (loaded === dayFiles.length) {
+                drawChart(labels, values, 'Porównanie dni');
+              }
+            }
+          });
+        });
+      } else if (this.value === 'week1') {
+        // Porównanie tygodnia 1 (dni 11, 14)
+        const week1Files = ["11.csv", "14.csv"];
+        let loaded = 0;
+        const labels = [];
+        const values = [];
+        week1Files.forEach((file) => {
+          Papa.parse(file, {
+            download: true,
+            header: true,
+            complete: function(results) {
+              const data = results.data;
+              const dayNum = file.replace('.csv', '').replace(/[^0-9]/g, '');
+              labels.push(dayNum);
+              const value = data.length > 0 ? parseFloat((data[0]['m2'] || data[0]['M2'] || '').replace(/"/g, '')) : null;
+              values.push(value);
+              loaded++;
+              if (loaded === week1Files.length) {
+                drawChart(labels, values, 'Tydzień 1 (dni 11, 14)');
+              }
+            }
+          });
+        });
+      } else if (this.value === 'week2') {
+        // Porównanie tygodnia 2 (dni 22, 28, 29)
+        const week2Files = ["22.csv", "28.csv", "29.csv"];
+        let loaded = 0;
+        const labels = [];
+        const values = [];
+        week2Files.forEach((file) => {
+          Papa.parse(file, {
+            download: true,
+            header: true,
+            complete: function(results) {
+              const data = results.data;
+              const dayNum = file.replace('.csv', '').replace(/[^0-9]/g, '');
+              labels.push(dayNum);
+              const value = data.length > 0 ? parseFloat((data[0]['m2'] || data[0]['M2'] || '').replace(/"/g, '')) : null;
+              values.push(value);
+              loaded++;
+              if (loaded === week2Files.length) {
+                drawChart(labels, values, 'Tydzień 2 (dni 22, 28, 29)');
+              }
+            }
+          });
+        });
+      } else {
+        loadCSVAndDrawChart(this.value);
+      }
     });
 
     window.onload = function() {
